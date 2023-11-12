@@ -4,13 +4,28 @@ import pytesseract
 import matplotlib.pyplot as plt
 import keras_ocr
 import easyocr
+import cv2
+import numpy as np
 
 def easyocr_read(file_path):
     reader = easyocr.Reader(['en'])
     result = reader.readtext(file_path)
     text = ''
+
+    image = cv2.imread(file_path)
+
     for i in range(len(result)):
+        points = np.array(result[i][0], dtype=np.int32)
+        points = points.reshape((-1, 1, 2))
+        cv2.polylines(image, [points], isClosed=True, color=(0, 255, 0), thickness=2)
+        cv2.putText(image, result[i][1], (points[0][0][0], points[0][0][1] - 10),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
+
         text += result[i][1] + ' '
+
+    output_file_path = 'easyocr_result.png'
+    cv2.imwrite(output_file_path, image)
+
     return text
 
 def keras_read(file_path):
@@ -25,10 +40,13 @@ def keras_read(file_path):
         word, bbox = predictions[i]
         text += word + ' '
 
-    #ax = plt.subplots(nrows=1, figsize=(20, 20))
-    #keras_ocr.tools.drawAnnotations(image=image, predictions=predictions, ax=ax)
+    fig, ax = plt.subplots(nrows=1, figsize=(20, 20))
+    keras_ocr.tools.drawAnnotations(image=image, predictions=predictions, ax=ax)
 
-    #plt.show()
+    output_file_path = 'keras_ocr_result.png'
+    plt.savefig(output_file_path)
+
+    plt.close()
 
     return text
 
