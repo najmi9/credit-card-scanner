@@ -7,11 +7,50 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <h1>ID Scanner</h1>
-    <video id="camera-preview" width="100%" height="auto" playsinline autoplay></video>
-    <button id="capture-btn">Capture ID</button>
-    <canvas id="captured-image" style="display: none;"></canvas>
-    <div id="result"></div>
+    <div id="loader">
+        <div class="spinner"></div>
+    </div>
+
+    <div class="container">
+        <div id="scan-area">
+            <h1>ID Scanner</h1>
+            <p id="timer"></p>
+                <video id="camera-preview" width="100%" height="auto" playsinline autoplay>
+            </video>
+
+            <div class="btns">
+                <button id="start-btn">Start</button>
+                <button id="capture-btn">Capture Image</button>
+            </div>
+        </div>
+
+        <canvas id="captured-image" style="display: none;"></canvas>
+        <div id="result">
+            <div id="creditCardForm">
+                <form id="formData">
+                    <div class="formGroup">
+                    <label for="cardNumber" id="cardNumberLabel">Card number</label>
+                    <input type="text" id="cardNumber" name="cardNumber">
+                    </div>
+
+                    <div class="formGroup">
+                    <label for="cvv" id="cvvLabel">CVV</label>
+                    <input type="text" id="cvv" name="cvv" placeholder="CVV" value="826" required>
+                    </div>
+                    <div class="formGroup">
+                        <label for="name" id="nameLabel">Name</label>
+                        <input type="text" id="name" name="name" placeholder="Name on Card" value="IMAD MAJMi" required>
+                    </div>
+
+                    <div class="formGroup">
+                    <label for="expirationDate" id="expirationDateLabel">Expiration Date</label>
+                    <input type="text" id="expirationDate" name="expirationDate" placeholder="MM/YY" value="02/21" required>
+                    </div>
+                </form>
+            </div>
+            <div id="result-data"></div>
+        </div>
+    </div>
 
     <script src="/static/script.js"></script>
 </body>
